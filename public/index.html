@@ -1,0 +1,47 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple POST and GET</title>
+</head>
+<body>
+  <h1>Simple POST and GET Example</h1>
+
+  <form id="messageForm">
+    <label for="name">Name: </label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="message">Message: </label>
+    <textarea id="message" name="message" required></textarea><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    document.getElementById('messageForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const data = {
+        name: formData.get('name'),
+        message: formData.get('message')
+      };
+
+      fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text())
+      .then(result => {
+        document.getElementById('response').innerText = result;
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
